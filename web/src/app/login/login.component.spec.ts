@@ -157,6 +157,12 @@ describe('LoginComponent characterization', () => {
 
   it('includes the username and returned message when login fails', async () => {
     vi.mocked(axios.post).mockRejectedValue({
+      config: {
+        data: JSON.stringify({
+          username: 'fictitious-user',
+          password: 'fictional-password'
+        })
+      },
       response: { data: { message: 'Fictional authentication error' } }
     });
     const component = new LoginComponent(
@@ -176,7 +182,7 @@ describe('LoginComponent characterization', () => {
       detail: 'Fictional authentication error'
     });
     expect(component.busy).toBe(false);
-    expect(consoleError).toHaveBeenCalled();
+    expect(consoleError.mock.calls).toEqual([['Falló la solicitud de autenticación']]);
   });
 
   it('reports an unavailable authentication service and resets the busy state', async () => {

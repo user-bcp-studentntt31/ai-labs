@@ -13,6 +13,8 @@ interface LoginMessage {
   detail?: string;
 }
 
+const AUTHENTICATION_FAILURE_LOG = 'Falló la solicitud de autenticación';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -67,7 +69,7 @@ export class LoginComponent {
         title: `No se pudo autenticar a ${this.username}.`,
         detail: this.authService.getErrorMessage(error)
       };
-      console.error(error);
+      console.error(AUTHENTICATION_FAILURE_LOG);
     } finally {
       this.busy = false;
     }
