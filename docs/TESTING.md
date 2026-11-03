@@ -63,3 +63,24 @@ Medición con `pytest-cov`/Coverage.py, configuración de `api/pyproject.toml` (
 - **Pendiente:** falta acordar en el contrato el tamaño máximo de archivo; no se escribió una prueba que invente el límite. La prueba de archivo sin extensión cubre el borde permitido por el comportamiento actual, no acredita una política de seguridad.
 - **Pendiente:** los ejemplos y respuestas de dependencias upstream se probaron con dobles locales; no se verificó la integración real con el servicio de autenticación.
 - **Pruebas propuestas:** una vez acordado el límite de carga y corregido H-API-03, ejecutar de nuevo las dos pruebas de autorización y añadir la prueba del tamaño máximo acordado. Mantener el requisito de respuesta sin datos de otros owners.
+
+### CORS — H-API-08 (2026-11-03)
+
+La decisión aprobada fue no autorizar ningún origen de navegador. Las pruebas verifican que la preflight desde un origen no configurado se rechaza y que una respuesta GET cross-origin no concede permiso CORS. Las solicitudes sin origen cross-origin conservan el comportamiento existente.
+
+| comando | directorio | código de salida | resultado |
+|---|---|---:|---|
+| `python -m pytest -q tests/test_api.py::test_cors_preflight_rejects_unconfigured_origins tests/test_api.py::test_cors_does_not_authorize_cross_origin_api_response` | `api/` | 0 | `2 passed` |
+| `python tools/lab.py test api` | raíz | 1 | `38 passed, 2 failed`; fallaron las dos pruebas preexistentes H-API-03. Cobertura total `98.43%`; gate de 85% alcanzado. |
+
+## Web (`web`)
+
+Pruebas del frontend Angular con Vitest en entorno Node. Para `H-WEB-02`, los casos comprueban que HTTP 401 limpia la sesión y redirige a login, mientras que errores no relacionados con autenticación conservan la sesión; también cubren carga correcta y ausencia de token.
+
+Fecha de ejecución: 2026-11-03. Directorio de trabajo: `web/`.
+
+| comando | código de salida | resultado |
+|---|---:|---|
+| `npm test` | 0 | `2` archivos y `5` pruebas pasaron (4 de dashboard y 1 de formato legado). |
+| `npm run test:coverage` | 0 | `2` archivos y `5` pruebas pasaron; `dashboard.component.ts`: 90.41% sentencias/líneas, 72.22% ramas y 75% funciones. Cobertura global del frontend: 42.6%; no es una medición exclusiva del código modificado. |
+| `npm run build` | 0 | Build de producción completado. Permanecen advertencias CommonJS preexistentes para `axios` y `lodash/merge`. |

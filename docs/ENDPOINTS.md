@@ -10,6 +10,10 @@
 
 En los ejemplos HTTP, `${TOKEN}` representa un token que el consumidor ya obtuvo por un mecanismo externo. La API no ofrece una ruta para emitirlo y el repositorio no documenta de forma segura ese mecanismo. La forma que espera el código es `Authorization: Bearer <Base64(username|role|unix_expiry|secret)>`; no es un JWT. No se incluye un token reutilizable ni un secreto en esta documentación.
 
+## Política CORS
+
+No hay orígenes de navegador autorizados. Las respuestas no incluyen permiso `Access-Control-Allow-Origin` para solicitudes cross-origin y las preflight desde esos orígenes se rechazan. Esta política no cambia las solicitudes directas a la API ni sustituye el requisito de autenticación de cada endpoint.
+
 ## `GET /api/tasks`
 
 ### 1. Qué hace

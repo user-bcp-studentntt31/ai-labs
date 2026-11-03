@@ -51,10 +51,10 @@ def create_app(db_path: str | None = None, upload_dir: str | None = None) -> Fas
     task_service = TaskService(TaskRepository(connection))
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_origins=[],
+        allow_credentials=False,
+        allow_methods=[],
+        allow_headers=[],
     )
 
     @app.get("/api/tasks")

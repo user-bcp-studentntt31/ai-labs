@@ -12,6 +12,8 @@ const STATUS_LABELS: Record<string, string> = {
   COMPLETED: 'Completado'
 };
 
+const HTTP_UNAUTHORIZED_STATUS = 401;
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -63,6 +65,10 @@ export class DashboardComponent implements OnInit {
         this.cdr.detectChanges();
       });
     } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response?.status === HTTP_UNAUTHORIZED_STATUS) {
+        await this.zone.run(() => this.logout());
+        return;
+      }
       this.zone.run(() => {
         this.error = error?.response?.data?.detail || error?.message || 'No se pudo cargar el dashboard';
         this.loading = false;

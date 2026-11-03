@@ -141,6 +141,30 @@ def test_endpoints_reject_unsupported_methods(
     assert response.json() == {"detail": "Method Not Allowed"}
 
 
+def test_cors_preflight_rejects_unconfigured_origins(client: TestClient) -> None:
+    response = client.options(
+        "/api/tasks",
+        headers={
+            "Origin": "https://untrusted.example",
+            "Access-Control-Request-Method": "GET",
+            "Access-Control-Request-Headers": "authorization",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "access-control-allow-origin" not in response.headers
+
+
+def test_cors_does_not_authorize_cross_origin_api_response(client: TestClient) -> None:
+    response = client.get(
+        "/api/tasks",
+        headers={**headers(), "Origin": "https://untrusted.example"},
+    )
+
+    assert response.status_code == 200
+    assert "access-control-allow-origin" not in response.headers
+
+
 def test_list_tasks_with_unknown_owner_is_empty(client: TestClient) -> None:
     response = client.get("/api/tasks", headers=headers(), params={"owner": "unknown"})
 
