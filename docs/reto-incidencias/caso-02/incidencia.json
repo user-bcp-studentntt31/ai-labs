@@ -1,0 +1,29 @@
+{
+  "case_id": "caso-02",
+  "service": "acceso",
+  "error_code": "AUTH_DEPENDENCY_UNAVAILABLE",
+  "correlation_id": "LOGIN-DEMO-201",
+  "first_seen": "2026-11-03T15:00:01Z",
+  "last_seen": "2026-11-03T15:00:04Z",
+  "occurrences": 2,
+  "priority": "P2",
+  "summary": "La dependencia de identidad identidad-demo no respondió correctamente (HTTP 503).",
+  "impact": "El intento de autenticación con correlación LOGIN-DEMO-201 recibió HTTP 503; el log no demuestra afectación de otros intentos.",
+  "evidence": [
+    {
+      "file": "caso-02-acceso.jsonl",
+      "line": 2,
+      "text": "event_id=evt-202; correlation_id=LOGIN-DEMO-201; code=AUTH_DEPENDENCY_UNAVAILABLE; http_status=503; dependency=identidad-demo; password=[REDACTADO]"
+    },
+    {
+      "file": "caso-02-acceso.jsonl",
+      "line": 4,
+      "text": "event_id=evt-203; correlation_id=LOGIN-DEMO-201; code=AUTH_DEPENDENCY_UNAVAILABLE; http_status=503; dependency=identidad-demo; token=[REDACTADO]"
+    }
+  ],
+  "missing_data": [
+    "El log no indica cuánto duró el problema ni si la dependencia se recuperó.",
+    "No permite determinar si hubo otros intentos o usuarios afectados."
+  ],
+  "recommended_action": "Verificar con el equipo responsable el estado de la dependencia de identidad para esta correlación."
+}
