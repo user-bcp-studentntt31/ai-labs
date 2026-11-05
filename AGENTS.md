@@ -59,7 +59,14 @@ En el Dia 1 usa solo ramas locales: day1/prompting, main y checkpoint/day1. Cons
 
 ## web
 
-### Contrato para agentes de desarrollo
+### Contrato para agentes de desarrollo{
+  "servers": {
+    "github-local": {
+      "type": "http",
+      "url": "http://localhost:8081/mcp"
+    }
+  }
+}
 
 1. Analiza antes de modificar y enumera los riesgos funcionales.
 2. Conserva los endpoints `/auth/login` y `/api/tasks`.
